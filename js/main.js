@@ -210,6 +210,75 @@
     }; // end ssViewAnimate
 
 
+   /* Render Experience
+    * ------------------------------------------------------ */
+    const ssRenderExperience = function() {
+        
+        if (typeof experienceData === 'undefined') return;
+
+        const timelineContainer = document.querySelector('.about-timelines .column.lg-6.tab-12:first-child .timeline');
+        
+        if (!timelineContainer) return;
+
+        // Clear existing content
+        timelineContainer.innerHTML = '';
+
+        // Render experience items
+        experienceData.forEach(exp => {
+            const block = `
+                <div class="timeline__block">
+                    <div class="timeline__bullet"></div>
+                    <div class="timeline__header">
+                        <h4 class="timeline__title">${exp.company}</h4>
+                        <h5 class="timeline__meta">${exp.position}</h5>
+                        <p class="timeline__timeframe">${exp.timeframe}</p>
+                    </div>
+                    <div class="timeline__desc">
+                        <p>${exp.description}</p>
+                    </div>
+                </div>
+            `;
+            timelineContainer.insertAdjacentHTML('beforeend', block);
+        });
+
+    }; // end ssRenderExperience
+
+
+   /* Render Education
+    * ------------------------------------------------------ */
+    const ssRenderEducation = function() {
+        
+        if (typeof educationData === 'undefined') return;
+
+        const timelineContainer = document.querySelector('.about-timelines .column.lg-6.tab-12:last-child .timeline');
+        
+        if (!timelineContainer) return;
+
+        // Clear existing content
+        timelineContainer.innerHTML = '';
+
+        // Render education items
+        educationData.forEach(edu => {
+            const timeframeHTML = edu.timeframe ? `<p class="timeline__timeframe">${edu.timeframe}</p>` : '';
+            const block = `
+                <div class="timeline__block">
+                    <div class="timeline__bullet"></div>
+                    <div class="timeline__header">
+                        <h4 class="timeline__title">${edu.institution}</h4>
+                        <h5 class="timeline__meta">${edu.degree}</h5>
+                        ${timeframeHTML}
+                    </div>
+                    <div class="timeline__desc">
+                        <p>${edu.description}</p>
+                    </div>
+                </div>
+            `;
+            timelineContainer.insertAdjacentHTML('beforeend', block);
+        });
+
+    }; // end ssRenderEducation
+
+
    /* Swiper
     * ------------------------------------------------------ */ 
     const ssSwiper = function() {
@@ -346,6 +415,111 @@
     }; // end ssMoveTo
 
 
+   /* Render Projects
+    * ------------------------------------------------------ */
+    const ssRenderProjects = function() {
+        
+        if (typeof projectsData === 'undefined') return;
+
+        const folioList = document.querySelector('.folio-list');
+        const modalsContainer = document.querySelector('.works-portfolio');
+        
+        if (!folioList || !modalsContainer) return;
+
+        // Clear existing content
+        folioList.innerHTML = '';
+
+        // Render project cards
+        projectsData.forEach(project => {
+            const projectCard = `
+                <li class="folio-list__item column" data-animate-el>
+                    <a class="folio-list__item-link" href="#${project.id}">
+                        <div class="folio-list__item-pic">
+                            <img src="${project.thumbnail}"
+                                 srcset="${project.thumbnail} 1x, ${project.thumbnailRetina} 2x" alt="${project.title}">
+                        </div>
+                        
+                        <div class="folio-list__item-text">
+                            <div class="folio-list__item-cat">
+                                ${project.category}
+                            </div>
+                            <div class="folio-list__item-title">
+                                ${project.title}
+                            </div>
+                        </div>
+                    </a>
+                    <a class="folio-list__proj-link" href="#" title="project link">
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </a>
+                </li>
+            `;
+            folioList.insertAdjacentHTML('beforeend', projectCard);
+
+            // Render modal
+            const tagsHTML = project.tags.map(tag => `<li>${tag}</li>`).join('');
+            const linkHTML = project.link ? 
+                `<a href="${project.link}" class="modal-popup__details" target="_blank">${project.linkText}</a>` : '';
+            
+            const modal = `
+                <div id="${project.id}" hidden>
+                    <div class="modal-popup">
+                        <img class="imgCenter" src="${project.modalImage}" alt="${project.title}">
+            
+                        <div class="modal-popup__desc">
+                            <h5>${project.title}</h5>
+                            <p>${project.description}</p>
+                            <ul class="modal-popup__cat">
+                                ${tagsHTML}
+                            </ul>
+                        </div>
+            
+                        ${linkHTML}
+                    </div>
+                </div>
+            `;
+            modalsContainer.insertAdjacentHTML('beforeend', modal);
+        });
+
+    }; // end ssRenderProjects
+
+
+   /* Render Testimonials
+    * ------------------------------------------------------ */
+    const ssRenderTestimonials = function() {
+        
+        if (typeof testimonialsData === 'undefined') return;
+
+        const swiperWrapper = document.querySelector('.testimonial-slider .swiper-wrapper');
+        
+        if (!swiperWrapper) return;
+
+        // Clear existing content
+        swiperWrapper.innerHTML = '';
+
+        // Render testimonials
+        testimonialsData.forEach(testimonial => {
+            const slide = `
+                <div class="testimonial-slider__slide swiper-slide">
+                    <div class="testimonial-slider__author">
+                        <img src="${testimonial.avatar}" alt="Author image" class="testimonial-slider__avatar">
+                        <cite class="testimonial-slider__cite">
+                            <a href="${testimonial.linkedin}" target="_blank">
+                            <strong>${testimonial.name}</strong>
+                            <span>${testimonial.title}</span>
+                            </a>
+                        </cite>
+                    </div>
+                    <p>
+                        ${testimonial.quote}
+                    </p>
+                </div>
+            `;
+            swiperWrapper.insertAdjacentHTML('beforeend', slide);
+        });
+
+    }; // end ssRenderTestimonials
+
+
    /* Initialize
     * ------------------------------------------------------ */
     (function ssInit() {
@@ -354,6 +528,10 @@
         ssMobileMenu();
         ssScrollSpy();
         ssViewAnimate();
+        ssRenderExperience();
+        ssRenderEducation();
+        ssRenderProjects();
+        ssRenderTestimonials();
         ssSwiper();
         ssLightbox();
         ssAlertBoxes();
